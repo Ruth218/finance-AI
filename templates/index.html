@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Financial Advisor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">AI Financial Advisor</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Welcome, {{ current_user.id }}!</h1>
+        <div class="mb-3">
+            <label for="language-select" class="form-label">Select Language:</label>
+            <select id="language-select" class="form-select">
+                <option value="en">English</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="kn">Kannada</option>
+                <option value="ml">Malayalam</option>
+            </select>
+        </div>
+        <div class="quick-buttons mb-3">
+            <button class="btn btn-outline-secondary" onclick="askQuickQuestion('How to save tax?')">Tax Saving</button>
+            <button class="btn btn-outline-secondary" onclick="askQuickQuestion('Best investments for 2024?')">Investments</button>
+            <button class="btn btn-outline-secondary" onclick="askQuickQuestion('How to get a home loan?')">Loans</button>
+        </div>
+        <div id="chat-box" class="border p-3 mb-3">
+            <div id="chat-log"></div>
+        </div>
+        <input type="text" id="user-input" class="form-control mb-3" placeholder="Ask me anything about finance...">
+        <button id="send-btn" class="btn btn-primary">Send</button>
+        <button id="pause-btn" class="btn btn-warning">Pause</button>
+        <button id="resume-btn" class="btn btn-success">Resume</button>
+        <button id="generate-report-btn" class="btn btn-info">Generate Report</button>
+        <div id="loading-spinner" class="d-none mt-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isPaused = false; // Track whether the request is paused
+        let currentRequest = null; // Track the current request
+
+        document.getElementById('send-btn').addEventListener('click', async () => {
+            const userInput = document.getElementById('user-input').value;
+            const language = document.getElementById('language-select').value;
+            if (!userInput) return;
+
+            // Show loading spinner
+            document.getElementById('loading-spinner').classList.remove('d-none');
+
+            // Add user query to chat log
+            const chatLog = document.getElementById('chat-log');
+            chatLog.innerHTML += `<div class="user-message">You: ${userInput}</div>`;
+
+            // Clear the input box
+            document.getElementById('user-input').value = '';
+
+            // Disable the send button while processing
+            document.getElementById('send-btn').disabled = true;
+
+            // Send query to backend
+            currentRequest = fetch('/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: userInput, language: language })
+            });
+
+            try {
+                const response = await currentRequest;
+                const data = await response.json();
+
+                // Add AI response to chat log
+                chatLog.innerHTML += `<div class="ai-message">AI: ${data.response}</div>`;
+            } catch (error) {
+                console.error("Error fetching response:", error);
+            } finally {
+                // Hide loading spinner
+                document.getElementById('loading-spinner').classList.add('d-none');
+
+                // Re-enable the send button
+                document.getElementById('send-btn').disabled = false;
+                currentRequest = null; // Reset the current request
+            }
+        });
+
+        document.getElementById('pause-btn').addEventListener('click', () => {
+            if (currentRequest) {
+                isPaused = true;
+                console.log("Request paused.");
+            }
+        });
+
+        document.getElementById('resume-btn').addEventListener('click', () => {
+            if (isPaused && currentRequest) {
+                isPaused = false;
+                console.log("Request resumed.");
+            }
+        });
+
+        document.getElementById('generate-report-btn').addEventListener('click', async () => {
+            const userInput = document.getElementById('user-input').value;
+            if (!userInput) return;
+
+            // Generate PDF report
+            const response = await fetch('/generate_report', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: userInput })
+            });
+            const data = await response.json();
+            alert(`Report generated: ${data.report_path}`);
+        });
+
+        function askQuickQuestion(question) {
+            document.getElementById('user-input').value = question;
+            document.getElementById('send-btn').click();
+        }
+    </script>
+</body>
+</html>

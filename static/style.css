@@ -1,0 +1,36 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply bg-blue-50 text-gray-900;
+}
+
+.container {
+    @apply max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-10;
+}
+
+h1 {
+    @apply text-3xl font-bold text-center mb-6;
+}
+
+#chat-box {
+    @apply border border-gray-300 p-4 h-96 overflow-y-auto mb-4 rounded-lg;
+}
+
+#user-input {
+    @apply w-full border border-gray-300 p-2 rounded-md mb-2;
+}
+
+#send-btn {
+    @apply w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600;
+}
+
+.user-message {
+    @apply text-blue-500 mb-2;
+}
+
+.ai-message {
+    @apply text-gray-700 mb-2;
+}

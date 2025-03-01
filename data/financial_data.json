@@ -1,0 +1,74 @@
+
+{
+  "users": [
+    {
+      "id": 1,
+      "age": 30,
+      "income": 1000000,
+      "risk_appetite": "High",
+      "financial_goals": ["Retirement", "Buy House"],
+      "current_investments": ["Stocks", "Mutual Funds"],
+      "recommended_investments": ["Equity Funds", "NPS"]
+    },
+    {
+      "id": 2,
+      "age": 45,
+      "income": 2500000,
+      "risk_appetite": "Medium",
+      "financial_goals": ["Children's Education"],
+      "current_investments": ["Fixed Deposits", "Real Estate"],
+      "recommended_investments": ["Balanced Funds", "PPF"]
+    }
+  ],
+  "investment_options": [
+    {
+      "asset_class": "Equity",
+      "instrument": "Stocks",
+      "risk_level": "High",
+      "return_percentage": 12,
+      "lock_in_period": "None",
+      "tax_implications": "Capital Gains"
+    },
+    {
+      "asset_class": "Debt",
+      "instrument": "Fixed Deposits",
+      "risk_level": "Low",
+      "return_percentage": 6,
+      "lock_in_period": "1-5 years",
+      "tax_implications": "Interest Income"
+    },
+    {
+      "asset_class": "Mutual Funds",
+      "instrument": "Equity Funds",
+      "risk_level": "Medium",
+      "return_percentage": 10,
+      "lock_in_period": "1 year",
+      "tax_implications": "Capital Gains"
+    }
+  ],
+  "tax_data": [
+    {
+      "income_slab": "0-2.5 Lakh",
+      "tax_rate": 0,
+      "deductions": 150000,
+      "exemptions": ["HRA", "LTA"]
+    },
+    {
+      "income_slab": "2.5-5 Lakh",
+      "tax_rate": 5,
+      "deductions": 150000,
+      "exemptions": ["HRA", "LTA"]
+    },
+    {
+      "income_slab": "5-10 Lakh",
+      "tax_rate": 20,
+      "deductions": 150000,
+      "exemptions": ["HRA", "LTA"]
+    }
+  ],
+  "south_india": {
+      "agriculture": "Consider PMFBY (Pradhan Mantri Fasal Bima Yojana) for crop insurance.",
+      "small_business": "Explore MUDRA loans for small businesses with low interest rates.",
+      "festivals": "Plan your savings for festivals like Pongal and Onam to avoid last-minute expenses."
+    }
+}
